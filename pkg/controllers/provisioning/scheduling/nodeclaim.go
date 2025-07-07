@@ -143,7 +143,7 @@ func (n *NodeClaim) CanAdd(ctx context.Context, pod *corev1.Pod, podData *PodDat
 	// Check instance type combinations
 	requests := resources.Merge(n.Spec.Resources.Requests, podData.Requests)
 
-	remaining, err := filterInstanceTypesByRequirements(n.InstanceTypeOptions, nodeClaimRequirements, podData.Requests, n.daemonResources, requests)
+	remaining, err := filterInstanceTypesByRequirements(n.InstanceTypeOptions, nodeClaimRequirements, podData.Requests, n.daemonResources, resources.IgnoreHugePages(requests))
 	if err != nil {
 		// We avoid wrapping this err because calling String() on InstanceTypeFilterError is an expensive operation
 		// due to calls to resources.Merge and stringifying the nodeClaimRequirements

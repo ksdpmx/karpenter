@@ -251,3 +251,10 @@ func String(list v1.ResourceList) string {
 	}
 	return pretty.Concise(list)
 }
+
+func IgnoreHugePages(requests v1.ResourceList) v1.ResourceList {
+	for _, hp := range []string{"64Ki", "2Mi", "32Mi", "1Gi"} {
+		delete(requests, v1.ResourceName(v1.ResourceHugePagesPrefix+hp))
+	}
+	return requests
+}
